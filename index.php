@@ -1,11 +1,14 @@
 <?php
+  /*
+    main page: list all tables from the database
+  */
   include'load_db.php';
 ?>
 <!doctype html><html><head>
-  <meta charset=utf8>
-  <title>UWWTD v8 GUI</title>
   <script src="table_definitions.js"></script>
   <script src="lib/vue.js"></script>
+  <meta charset=utf8>
+  <title>UWWTD v8 GUI</title>
 </head><body>
 
 <!--navbar-->
@@ -15,19 +18,17 @@
   <a href="db/phpliteadmin.php" target=_blank>phpLiteAdmin</a> |
 </nav><hr>
 
+<!--title-->
 <h1>UWWTD v8 database GUI</h1>
 
+<!--number of tables-->
 <?php
   $sql="SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'";
   $n_tables = current($db->query($sql)->fetchArray(SQLITE3_ASSOC));
-  echo "
-    <p>
-      The database has $n_tables tables
-    </p>
-  ";
+  echo "<p>The database has $n_tables tables</p>";
 ?>
 
-<!--list tables-->
+<!--list all tables-->
 <div id=app>
   <table border=1>
     <tr>
@@ -36,15 +37,28 @@
       <th>description
     </tr>
     <?php
-      $sql="SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'";
+      $sql="SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name";
       $res=$db->query($sql);
       while($row=$res->fetchArray(SQLITE3_ASSOC)){
         $obj = (object)$row; //convert to object
         $n_rows = current($db->query("SELECT COUNT(*) FROM $obj->name")->fetchArray(SQLITE3_ASSOC));
-        echo "<tr>
-          <td>
-            $obj->name
-          </td>
+        echo "<tr>";
+
+        if(file_exists("$obj->name.php")){
+          echo"
+            <td>
+              <a href='$obj->name.php'>$obj->name</a>
+            </td>
+          ";
+        }else{
+          echo"
+            <td>
+              $obj->name
+            </td>
+          ";
+        }
+
+        echo"
           <td>
             $n_rows
           </td>
@@ -57,8 +71,17 @@
       }
     ?>
   </table>
-</div>
+</div><hr>
 
+<!--footer-->
+<small>
+  <?php
+    $sqlite_version = SQLite3::version()['versionString'];
+    echo "SQLite version $sqlite_version";
+  ?>
+</small>
+
+<!--vue object to link tables with "table_definitions.js"-->
 <script>
   new Vue({
     el:"#app",
