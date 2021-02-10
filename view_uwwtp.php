@@ -44,8 +44,26 @@ $uwwCode = SQLite3::escapeString($_GET['uwwCode']);
 ?>
 </table><hr>
 
+<!--discharge points-->
+<b>Discharge points (connection with table T_DischargePoints)</b>
+<table border=1>
+  <?php
+    $sql="SELECT * FROM T_DischargePoints WHERE uwwCode='$uwwCode'";
+    $res=$db->query($sql);
+    while($row=$res->fetchArray(SQLITE3_ASSOC)){
+      $obj=(object)$row; //convert to object
+      echo "
+        <tr>
+          <th>dcpCode <td><a href='view_dcp.php?dcpCode=$obj->dcpCode'>$obj->dcpCode</a>
+          <th>dcpName <td>$obj->dcpName
+        </tr>
+      ";
+    }
+  ?>
+</table><hr>
+
 <!--connections-->
-<b>Connected to the following Agglomerations (table T_UWWTPAgglos)</b>
+<b>Agglomerations connected (connection with table T_UWWTPAgglos)</b>
 <table border=1>
   <?php
     $sql="SELECT * FROM T_UWWTPAgglos WHERE aucUwwCode='$uwwCode'";

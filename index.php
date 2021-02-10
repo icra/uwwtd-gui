@@ -16,6 +16,8 @@
   <a href="https://www.eea.europa.eu/data-and-maps/data/waterbase-uwwtd-urban-waste-water-treatment-directive-7" target=_blank>eea.europa.eu</a> |
   <a href="https://github.com/icra/uwwtd-gui/" target=_blank>github/icra/uwwtd-gui</a> |
   <a href="db/phpliteadmin.php" target=_blank>phpLiteAdmin</a> |
+  <a href="detect_problems.php">detect problems</a> |
+  <a href="get_data.php">get raw data (json)</a> |
 </nav><hr>
 
 <!--title-->
