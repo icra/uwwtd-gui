@@ -85,8 +85,6 @@ $sql="
     dcp.dcpState  != 0           AND
     uww.uwwState  != 0
   LIMIT 1
-
-
 ";
 
 //show sql statement
